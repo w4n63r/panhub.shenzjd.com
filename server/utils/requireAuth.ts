@@ -18,8 +18,11 @@ export function requireDynamicAuth(event: H3Event): void {
     const ts = parseInt(parts[0], 10);
     const sig = parts[1];
     
-    // 60秒过期防重放
-    if (Date.now() - ts > 60000 || Date.now() - ts < -5000) throw new Error();
+    // 放宽手机本地时间与服务器时间的误差容忍度 (前后 5 分钟)
+    const timeDiff = Date.now() - ts;
+    if (Math.abs(timeDiff) > 300000) {
+        throw new Error(`[Expired] Time diff: ${timeDiff}ms`);
+    }
 
     // DJB2 Hash 快速复刻校验
     const str = ts + secret;
@@ -29,9 +32,11 @@ export function requireDynamicAuth(event: H3Event): void {
         hash |= 0;
     }
     
-    if (hash.toString(16) !== sig) throw new Error();
-  } catch {
-    throw createError({ statusCode: 401, statusMessage: "Invalid or expired API signature" });
+    if (hash.toString(16) !== sig) {
+        throw new Error(`[Hash Mismatch] Expected: ${hash.toString(16)}, Got: ${sig}`);
+    }
+  } catch (err: any) {
+    throw createError({ statusCode: 401, statusMessage: `Invalid or expired API signature: ${err.message}` });
   }
 }
 
