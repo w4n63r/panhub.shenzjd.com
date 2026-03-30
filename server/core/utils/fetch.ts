@@ -64,7 +64,7 @@ export async function fetchWithRetry<T = any>(
   const fetcher: $Fetch = ofetch.create({
     timeout,
     headers: {
-      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       ...options.headers,
     },
     ...options,
@@ -164,7 +164,7 @@ export function createPersistentFetcher(
   return ofetch.create({
     timeout,
     headers: {
-      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     },
     // 注意：ofetch 在 Node.js 环境下会自动复用连接
     // 如果需要更精细的控制，可以在这里添加 agent 配置

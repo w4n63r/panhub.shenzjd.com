@@ -51,7 +51,7 @@ async function fetchHtmlWithFallback(url: string): Promise<string> {
         ""
       )}`;
       return await ofetch<string>(proxyUrl, {
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout: 12000,
       }).catch(() => "");
     }
@@ -63,7 +63,7 @@ async function fetchHtmlWithFallback(url: string): Promise<string> {
       ""
     )}`;
     return ofetch<string>(proxyUrl, {
-      headers: { "user-agent": "Mozilla/5.0" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
       timeout: 12000,
     }).catch(() => "");
   }

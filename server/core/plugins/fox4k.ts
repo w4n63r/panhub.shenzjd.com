@@ -69,7 +69,7 @@ async function fetchDetailLinks(
 ): Promise<SearchResult["links"]> {
   try {
     let html = await ofetch<string>(detailUrl, {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout,
     }).catch(() => "");
     if (!html || /Just a moment|Cloudflare|Access denied/i.test(html)) {
@@ -78,7 +78,7 @@ async function fetchDetailLinks(
         ""
       )}`;
       html = await ofetch<string>(proxy, {
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout,
       }).catch(() => "");
     }
@@ -104,7 +104,7 @@ export class Fox4kPlugin extends BaseAsyncPlugin {
       Number((ext as any)?.__plugin_timeout_ms) || 10000
     );
     let html = await ofetch<string>(SEARCH(keyword, 1), {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout,
     }).catch(() => "");
     if (!html || /Just a moment|Cloudflare|Access denied/i.test(html)) {
@@ -113,7 +113,7 @@ export class Fox4kPlugin extends BaseAsyncPlugin {
         ""
       )}`;
       html = await ofetch<string>(proxy, {
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout,
       }).catch(() => "");
     }

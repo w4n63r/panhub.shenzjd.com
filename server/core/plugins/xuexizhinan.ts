@@ -26,7 +26,7 @@ function collectLinks(html: string): SearchResult["links"] {
 async function fetchDetail(url: string) {
   try {
     const html = await ofetch<string>(url, {
-      headers: { "user-agent": "Mozilla/5.0" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
       timeout: 10000,
     });
     const $ = load(html);
@@ -51,7 +51,7 @@ export class XuexizhinanPlugin extends BaseAsyncPlugin {
   }
   override async search(keyword: string): Promise<SearchResult[]> {
     const html = await ofetch<string>(SEARCH(keyword), {
-      headers: { "user-agent": "Mozilla/5.0" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
       timeout: 10000,
     }).catch(() => "");
     if (!html) return [];

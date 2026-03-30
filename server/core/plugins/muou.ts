@@ -44,13 +44,13 @@ function collectLinks(html: string): SearchResult["links"] {
 async function fetchDetail(url: string, timeout: number) {
   try {
     let html = await ofetch<string>(url, {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout,
     }).catch(() => "");
     if (!html || /Just a moment|Cloudflare|Access denied/i.test(html)) {
       const proxy = `https://r.jina.ai/${url.replace(/^https?:\/\//, "")}`;
       html = await ofetch<string>(proxy, {
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout,
       }).catch(() => "");
     }
@@ -76,7 +76,7 @@ export class MuouPlugin extends BaseAsyncPlugin {
       Number((ext as any)?.__plugin_timeout_ms) || 10000
     );
     let html = await ofetch<string>(SEARCH(keyword), {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout,
     }).catch(() => "");
     if (!html || /Just a moment|Cloudflare|Access denied/i.test(html)) {
@@ -85,7 +85,7 @@ export class MuouPlugin extends BaseAsyncPlugin {
         ""
       )}`;
       html = await ofetch<string>(proxy, {
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout,
       }).catch(() => "");
     }

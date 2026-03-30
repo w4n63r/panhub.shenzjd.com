@@ -18,7 +18,7 @@ export class PanyqPlugin extends BaseAsyncPlugin {
     const list = await ofetch<{
       data: { hits: Array<{ eid: string; desc: string }> };
     }>(`${BASE}/api/search?sign=${encodeURIComponent(sign)}&page=1`, {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE },
       timeout: 10000,
     }).catch(() => undefined);
     if (!list) return [];
@@ -52,7 +52,7 @@ async function getSign(keyword: string): Promise<string> {
     body: payload,
     headers: {
       "content-type": "text/plain;charset=UTF-8",
-      "user-agent": "Mozilla/5.0",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       referer: BASE,
     },
     timeout: 10000,
@@ -69,7 +69,7 @@ async function getFinalLink(eid: string): Promise<string> {
     body: `[{"eid":"${eid}"}]`,
     headers: {
       "content-type": "text/plain;charset=UTF-8",
-      "user-agent": "Mozilla/5.0",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
       referer: `${BASE}/go/${eid}`,
     },
     timeout: 10000,

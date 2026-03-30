@@ -58,7 +58,7 @@ async function fetchLinksForPost(
     try {
       const json = await ofetch<any>(BUTTON_DETAIL(postId, i), {
         method: "POST",
-        headers: { "user-agent": "Mozilla/5.0" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" },
         timeout: 8000,
       });
       const jwtUrl: string = json?.button?.url || "";
@@ -89,7 +89,7 @@ export class SusuPlugin extends BaseAsyncPlugin {
       Number((ext as any)?.__plugin_timeout_ms) || 8000
     );
     const html = await ofetch<string>(SEARCH(keyword), {
-      headers: { "user-agent": "Mozilla/5.0", referer: "https://susuifa.com/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: "https://susuifa.com/" },
       timeout,
     }).catch(() => "");
     if (!html) return [];

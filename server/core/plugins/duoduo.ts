@@ -49,7 +49,7 @@ async function fetchDetail(url: string) {
   const html = await fetchWithRetry<string>(
     url,
     {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
     },
     {
       maxRetries: 2,
@@ -71,7 +71,7 @@ export class DuoduoPlugin extends BaseAsyncPlugin {
     const html = await fetchWithRetry<string>(
       SEARCH(keyword),
       {
-        headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+        headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       },
       {
         maxRetries: 2,

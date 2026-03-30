@@ -25,7 +25,7 @@ function collectUcLinks(html: string): SearchResult["links"] {
 async function fetchDetailLinks(id: string) {
   try {
     const html = await ofetch<string>(DETAIL(id), {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout: 8000,
     });
     const $ = load(html);
@@ -42,7 +42,7 @@ export class ShandianPlugin extends BaseAsyncPlugin {
   }
   override async search(keyword: string): Promise<SearchResult[]> {
     const html = await ofetch<string>(SEARCH(keyword), {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout: 8000,
     }).catch(() => "");
     if (!html) return [];

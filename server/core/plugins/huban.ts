@@ -108,7 +108,7 @@ export class HubanPlugin extends BaseAsyncPlugin {
       const url = ENDPOINTS[idx](keyword);
       try {
         const resp = await ofetch<HubanResp>(url, {
-          headers: { "user-agent": "Mozilla/5.0", accept: "application/json" },
+          headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", accept: "application/json" },
           timeout,
         });
         if (!resp || resp.code !== 1) continue;

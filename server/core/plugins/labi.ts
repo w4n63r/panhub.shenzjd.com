@@ -45,7 +45,7 @@ export class LabiPlugin extends BaseAsyncPlugin {
         if (plot) contentPieces.push(plot);
         const detail = await ofetch<string>(DETAIL_URL(id), {
           headers: {
-            "user-agent": "Mozilla/5.0",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             referer: "http://xiaocge.fun/",
           },
           timeout: 6000,

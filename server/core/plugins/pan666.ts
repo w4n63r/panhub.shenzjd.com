@@ -55,7 +55,7 @@ export class Pan666Plugin extends BaseAsyncPlugin {
       keyword
     )}&include=mostRelevantPost&page[offset]=0&page[limit]=50`;
     const resp = await ofetch<Pan666Resp>(url, {
-      headers: { "user-agent": "Mozilla/5.0", accept: "application/json" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", accept: "application/json" },
       timeout,
     }).catch(() => undefined);
     if (!resp) return [];

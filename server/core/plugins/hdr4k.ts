@@ -58,7 +58,7 @@ async function fetchDetail(detailUrl: string) {
   try {
     const html = await ofetch<string>(detailUrl, {
       headers: {
-        "user-agent": "Mozilla/5.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         referer: "https://www.4khdr.cn/",
       },
       timeout: 10000,
@@ -97,7 +97,7 @@ export class Hdr4kPlugin extends BaseAsyncPlugin {
       method: "POST",
       body: form,
       headers: {
-        "user-agent": "Mozilla/5.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         "content-type": "application/x-www-form-urlencoded",
         referer: "https://www.4khdr.cn/",
       },

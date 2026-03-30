@@ -38,7 +38,7 @@ export class PantaPlugin extends BaseAsyncPlugin {
       SEARCH_URL(keyword),
       {
         headers: {
-          "user-agent": "Mozilla/5.0",
+          "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
           referer: "https://www.91panta.cn/index",
         },
       },
@@ -71,7 +71,7 @@ export class PantaPlugin extends BaseAsyncPlugin {
           detailUrl,
           {
             headers: {
-              "user-agent": "Mozilla/5.0",
+              "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
               referer: "https://www.91panta.cn/index",
             },
           },

@@ -10,7 +10,7 @@ const SEARCH = (kw: string) =>
 async function fetchDetailMagnet(url: string): Promise<string> {
   try {
     const html = await ofetch<string>(url, {
-      headers: { "user-agent": "Mozilla/5.0", referer: BASE + "/" },
+      headers: { "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", referer: BASE + "/" },
       timeout: 10000,
     });
     const $ = load(html);
@@ -28,7 +28,7 @@ export class NyaaPlugin extends BaseAsyncPlugin {
   override async search(keyword: string): Promise<SearchResult[]> {
     const html = await ofetch<string>(SEARCH(keyword), {
       headers: {
-        "user-agent": "Mozilla/5.0",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         referer: BASE + "/",
       },
       timeout: 10000,
