@@ -14,7 +14,7 @@ export function requireDynamicAuth(event: H3Event): void {
   
   try {
     const parts = token.split('.');
-    if (parts.length !== 2) throw new Error();
+    if (parts.length !== 2) throw new Error(`[Format Error] Invalid token shape received. Token value is: '${token}'`);
     const ts = parseInt(parts[0], 10);
     const sig = parts[1];
     
