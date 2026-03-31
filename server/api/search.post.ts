@@ -1,12 +1,10 @@
 import { defineEventHandler, readBody, sendError, createError } from "h3";
-import { requireSearchAuth, requireDynamicAuth } from "../utils/requireAuth";
+import { requireSearchAuth } from "../utils/requireAuth";
 import { getOrCreateSearchService } from "../core/services";
 import type { GenericResponse, SearchRequest } from "../core/types/models";
 
 export default defineEventHandler(async (event) => {
-  // 网页端 Cookie 保护 或 API 动态签名验证
-  try { requireSearchAuth(event); } catch(e) { requireDynamicAuth(event); }
-  
+  requireSearchAuth(event);
   const config = useRuntimeConfig();
   const service = getOrCreateSearchService(config);
   const body = (await readBody<SearchRequest>(event)) || ({} as SearchRequest);
