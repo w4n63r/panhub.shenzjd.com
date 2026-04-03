@@ -1,0 +1,11 @@
+FROM node:20-alpine
+WORKDIR /app
+# 核心：只拷贝本地编译好的产物，完全脱离 node_modules
+COPY .output ./.output
+# 创建持久化目录
+RUN mkdir -p /app/data && chmod 777 /app/data
+ENV HOST=0.0.0.0
+ENV PORT=3000
+# 开启内存保护，防止 Node 在 1G 内存下过度申请内存
+ENV NODE_OPTIONS="--max-old-space-size=512"
+CMD ["node", ".output/server/index.mjs"]

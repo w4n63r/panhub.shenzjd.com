@@ -13,17 +13,17 @@ export default defineNuxtConfig({
         {
           name: "viewport",
           content:
-            "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+              "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
         },
         {
           name: "description",
           content:
-            "PanHub：聚合阿里云盘、夸克、百度网盘、115、迅雷等平台的全网最全网盘搜索工具，实时检索分享资源，免费、快速、无广告。",
+              "PanHub：聚合阿里云盘、夸克、百度网盘、115、迅雷等平台的全网最全网盘搜索工具，实时检索分享资源，免费、快速、无广告。",
         },
         {
           name: "keywords",
           content:
-            "网盘搜索, 阿里云盘, 夸克, 百度网盘, 115, 迅雷, 资源搜索, 盘搜, panhub, 网盘聚合搜索",
+              "网盘搜索, 阿里云盘, 夸克, 百度网盘, 115, 迅雷, 资源搜索, 盘搜, panhub, 网盘聚合搜索",
         },
         { name: "theme-color", content: "#111111" },
         { property: "og:type", content: "website" },
@@ -33,10 +33,24 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    // 根据环境变量动态选择部署预设
-    preset: process.env.VERCEL
-      ? "vercel"
-      : process.env.NITRO_PRESET || "cloudflare-module",
+    preset: "node-server",
+    compressPublicAssets: true,
+    minify: true,
+    // 强制内联这些容易出路径问题的包，实现全量单文件打包
+    externals: {
+      inline: [
+        'dom-serializer',
+        'entities',
+        'cheerio',
+        'htmlparser2',
+        'css-select',
+        'parse5',
+        'boolbase',
+        'nth-check',
+        'domhandler',
+        'domutils'
+      ]
+    }
   },
   routeRules: {
     // 热搜接口不缓存，否则 POST 写入后 GET 仍返回旧数据

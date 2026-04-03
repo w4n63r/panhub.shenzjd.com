@@ -34,31 +34,45 @@ export class MemoryCache<T = unknown> {
 
   constructor(options: MemoryCacheOptions = {}) {
     this.options = {
-      maxSize: options.maxSize ?? 1000,
-      maxMemoryBytes: options.maxMemoryBytes ?? 100 * 1024 * 1024, // 默认 100MB
+      maxSize: options.maxSize ?? 500,
+      maxMemoryBytes: options.maxMemoryBytes ?? 50 * 1024 * 1024, // 默认 50MB（适配 1GB 服务器）
       cleanupInterval: options.cleanupInterval ?? 5 * 60 * 1000,
       memoryThreshold: options.memoryThreshold ?? 0.8, // 80% 触发清理
     };
   }
 
   /**
-   * 估算对象大小（字节）
+   * 轻量级对象大小估算（避免 JSON.stringify 的 CPU 开销）
    */
-  private estimateSize(value: T): number {
-    try {
-      if (value === null || value === undefined) return 8;
-      if (typeof value === 'string') return value.length * 2;
-      if (typeof value === 'number') return 8;
-      if (typeof value === 'boolean') return 4;
-      if (typeof value === 'object') {
-        // 简化的对象大小估算
-        const str = JSON.stringify(value);
-        return str ? str.length * 2 : 64;
+  private estimateSize(value: T, depth: number = 0): number {
+    if (depth > 4) return 64; // 防止深度嵌套消耗过多 CPU
+    if (value === null || value === undefined) return 8;
+    if (typeof value === 'string') return value.length * 2;
+    if (typeof value === 'number') return 8;
+    if (typeof value === 'boolean') return 4;
+    if (Array.isArray(value)) {
+      // 采样估算：取前 5 个元素的平均大小 × 总数
+      const sample = Math.min(value.length, 5);
+      let sampleSize = 0;
+      for (let i = 0; i < sample; i++) {
+        sampleSize += this.estimateSize(value[i] as T, depth + 1);
       }
-      return 64;
-    } catch {
-      return 64;
+      const avgSize = sample > 0 ? sampleSize / sample : 64;
+      return Math.round(avgSize * value.length) + 32;
     }
+    if (typeof value === 'object') {
+      const keys = Object.keys(value as object);
+      let size = 32; // 对象基础开销
+      const sampleKeys = keys.slice(0, 10);
+      for (const key of sampleKeys) {
+        size += key.length * 2 + this.estimateSize((value as any)[key], depth + 1);
+      }
+      if (keys.length > 10) {
+        size = Math.round(size * (keys.length / 10));
+      }
+      return size;
+    }
+    return 64;
   }
 
   /**

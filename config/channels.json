@@ -92,7 +92,7 @@
     "xuexizhinan",
     "nyaa"
   ],
-  "defaultConcurrency": 4,
-  "pluginTimeoutMs": 5000,
+  "defaultConcurrency": 2,
+  "pluginTimeoutMs": 8000,
   "cacheTtlMinutes": 30
 }

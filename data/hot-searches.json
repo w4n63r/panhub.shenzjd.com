@@ -1,65 +1,23 @@
 {
   "items": [
     {
-      "term": "寻秦记",
-      "score": 2,
-      "lastSearched": 1772939897481,
-      "createdAt": 1772897792949
+      "term": "高分词",
+      "score": 3,
+      "lastSearched": 1775131681613,
+      "createdAt": 1775131681612
     },
     {
-      "term": "超时空辉夜姬！",
+      "term": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       "score": 1,
-      "lastSearched": 1772898138998,
-      "createdAt": 1772898138998
+      "lastSearched": 1775131681618,
+      "createdAt": 1775131681618
     },
     {
-      "term": "惊变28年2：白骨圣殿",
+      "term": "低分词",
       "score": 1,
-      "lastSearched": 1772898137253,
-      "createdAt": 1772898137253
-    },
-    {
-      "term": "呼啸山庄",
-      "score": 1,
-      "lastSearched": 1772898135235,
-      "createdAt": 1772898135235
-    },
-    {
-      "term": "至尊马蒂",
-      "score": 1,
-      "lastSearched": 1772898133443,
-      "createdAt": 1772898133443
-    },
-    {
-      "term": "东京出租车",
-      "score": 1,
-      "lastSearched": 1772898131582,
-      "createdAt": 1772898131582
-    },
-    {
-      "term": "哈姆奈特",
-      "score": 1,
-      "lastSearched": 1772898129707,
-      "createdAt": 1772898129707
-    },
-    {
-      "term": "家弑服务",
-      "score": 1,
-      "lastSearched": 1772898127805,
-      "createdAt": 1772898127805
-    },
-    {
-      "term": "庇护之地",
-      "score": 1,
-      "lastSearched": 1772897996979,
-      "createdAt": 1772897996979
-    },
-    {
-      "term": "你行！你上！",
-      "score": 1,
-      "lastSearched": 1772897453837,
-      "createdAt": 1772897453837
+      "lastSearched": 1775131681614,
+      "createdAt": 1775131681614
     }
   ],
-  "updatedAt": 1772939897481
+  "updatedAt": 1775131681619
 }

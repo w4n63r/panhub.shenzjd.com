@@ -1,11 +1,43 @@
 import { load } from "cheerio";
 import { ofetch } from "ofetch";
 import type { SearchResult } from "../types/models";
-import { matchesSearchKeyword } from "../utils/searchKeyword";
+import {
+  matchesSearchKeyword,
+  buildSearchKeywordVariants,
+  normalizeSearchKeyword,
+} from "../utils/searchKeyword";
 
 export interface TgFetchOptions {
   limitPerChannel?: number;
   userAgent?: string;
+}
+
+/** Precomputed keyword data to avoid recomputation per message */
+interface PrecomputedKeyword {
+  raw: string;
+  normalizedVariants: string[];
+}
+
+function precomputeKeyword(keyword: string): PrecomputedKeyword {
+  const variants = buildSearchKeywordVariants(keyword);
+  return {
+    raw: keyword,
+    normalizedVariants: variants.map((v) => normalizeSearchKeyword(v)),
+  };
+}
+
+function matchesPrecomputed(
+  text: string,
+  precomputed: PrecomputedKeyword
+): boolean {
+  if (!precomputed.raw.trim()) return true;
+  const source = (text || "").trim();
+  if (!source) return false;
+  const normalizedSource = normalizeSearchKeyword(source);
+  if (!normalizedSource) return false;
+  return precomputed.normalizedVariants.some((nv) =>
+    normalizedSource.includes(nv)
+  );
 }
 
 export async function fetchTgChannelPosts(
@@ -21,6 +53,7 @@ export async function fetchTgChannelPosts(
   const maxPages = Math.ceil(limit / 20);
   const allResults: SearchResult[] = [];
   let before: string | undefined;
+  const precomputed = precomputeKeyword(keyword);
 
   for (let page = 0; page < maxPages && allResults.length < limit; page++) {
     const baseUrl = `https://t.me/s/${encodeURIComponent(channel)}`;
@@ -46,7 +79,12 @@ export async function fetchTgChannelPosts(
     }
 
     const $ = load(html || "");
-    const pageResults = parseChannelPage($, channel, keyword, limit - allResults.length);
+    const pageResults = parseChannelPage(
+      $,
+      channel,
+      precomputed,
+      limit - allResults.length
+    );
     allResults.push(...pageResults);
 
     const nextLink = $('a[href*="before="]').first();
@@ -71,9 +109,9 @@ export async function fetchTgChannelPosts(
 }
 
 function parseChannelPage(
-  $: cheerio.CheerioAPI,
+  $: ReturnType<typeof load>,
   channel: string,
-  keyword: string,
+  precomputed: PrecomputedKeyword,
   limit: number
 ): SearchResult[] {
   const results: SearchResult[] = [];
@@ -109,7 +147,7 @@ function parseChannelPage(
     return "";
   };
 
-  $(".tgme_widget_message_wrap").each((i, el) => {
+  $(".tgme_widget_message_wrap").each((i: number, el: any) => {
     if (results.length >= limit) return false;
     const root = $(el);
     const text = root.find(".tgme_widget_message_text").text().trim();
@@ -117,7 +155,7 @@ function parseChannelPage(
     const postId = root.find(".tgme_widget_message").attr("data-post") || "";
     const firstLine = text.split("\n")[0] || text.slice(0, 80);
 
-    if (!matchesSearchKeyword(text, keyword)) {
+    if (!matchesPrecomputed(text, precomputed)) {
       return;
     }
 
@@ -142,14 +180,14 @@ function parseChannelPage(
       seenUrls.add(key);
 
       const m = text.match(passwdPattern);
-      const password = m ? m[1] : "";
+      const password = m?.[1] ?? "";
       links.push({ type, url: deproxied, password });
     };
 
     const urlsFromText = text.match(urlPattern) || [];
     for (const u of urlsFromText) addUrl(u);
 
-    root.find(".tgme_widget_message_text a[href]").each((_, a) => {
+    root.find(".tgme_widget_message_text a[href]").each((_: number, a: any) => {
       const href = $(a).attr("href");
       if (href) addUrl(href);
     });

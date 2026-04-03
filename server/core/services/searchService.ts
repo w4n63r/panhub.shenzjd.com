@@ -24,10 +24,12 @@ export interface SearchServiceOptions {
 }
 
 export class SearchService {
-  private static readonly TG_CHANNEL_LIMIT = 80;
-  private static readonly TG_DEEP_CHANNEL_LIMIT = 160;
+  private static readonly TG_CHANNEL_LIMIT = 40;
+  private static readonly TG_DEEP_CHANNEL_LIMIT = 80;
   private static readonly TG_DEEP_SEARCH_TRIGGER = 3;
   private static readonly PLUGIN_VARIANT_TRIGGER = 5;
+  private static readonly MAX_TG_CONCURRENCY = 3;
+  private static readonly MAX_PLUGIN_CONCURRENCY = 3;
 
   private options: SearchServiceOptions;
   private pluginManager: PluginManager;
@@ -98,14 +100,15 @@ export class SearchService {
         : this.options.defaultConcurrency;
     const effResultType =
       !resultType || resultType === "merge" ? "merged_by_type" : resultType;
-    const effSourceType = sourceType ?? "all";
+    const effSourceType = sourceType ?? "plugin";
 
     let tgResults: SearchResult[] = [];
     let pluginResults: SearchResult[] = [];
 
     const tasks: Array<() => Promise<void>> = [];
 
-    if (effSourceType === "all" || effSourceType === "tg") {
+    // TG 搜索任务 (当前已禁用，仅在显式指定 src=tg 时可用)
+    if (effSourceType === "tg") {
       tasks.push(async () => {
         const concOverride =
           typeof concurrency === "number" && concurrency > 0
@@ -211,7 +214,10 @@ export class SearchService {
     );
     const concurrency = Math.max(
       2,
-      Math.min(concurrencyOverride ?? this.options.defaultConcurrency, 12)
+      Math.min(
+        concurrencyOverride ?? this.options.defaultConcurrency,
+        SearchService.MAX_TG_CONCURRENCY
+      )
     );
 
     const prioritySet = new Set(priorityChannels || []);
@@ -252,12 +258,13 @@ export class SearchService {
     );
 
     let results = shallowResults;
+    // 深度搜索：仅对 priority 频道重试，避免全量翻倍
     if (
       results.length < SearchService.TG_DEEP_SEARCH_TRIGGER &&
       keyword.trim().length > 1 &&
-      chList.length > 0
+      priorityList.length > 0
     ) {
-      const deepTasks = [...priorityList, ...normalList].map((channel) =>
+      const deepTasks = priorityList.map((channel) =>
         createChannelTask(channel, SearchService.TG_DEEP_CHANNEL_LIMIT)
       );
       const deepResults = flattenResults(
@@ -353,6 +360,10 @@ export class SearchService {
       return results;
     });
 
+    const pluginConcurrency = Math.min(
+      concurrency,
+      SearchService.MAX_PLUGIN_CONCURRENCY
+    );
     const resultsByPlugin = await this.runWithConcurrency(
       pluginPromises.map((promiseFactory) => async () => {
         try {
@@ -363,7 +374,7 @@ export class SearchService {
           return [];
         }
       }),
-      concurrency
+      pluginConcurrency
     );
 
     const merged: SearchResult[] = [];
